@@ -19,6 +19,7 @@ const AddTaskWidget = () => {
   const addTaskFromWidget = () => {
     if(titleRef.current.value){
       const task = new Task(1, titleRef.current.value, textRef.current.value, assignee)
+      console.log('task being added', task)
       dispatch(tasksActions.addTask({task}))
       titleRef.current.value = ""
       textRef.current.value = ""

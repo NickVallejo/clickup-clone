@@ -8,42 +8,41 @@ import { dragDone } from './helper-funcs/board-funcs'
 
 const TaskWidget = ({task}) => {
   const users = useSelector(state => state.users)
-  const {from , to} = useSelector(state => state.board.drag)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if(from && to) dispatch(tasksActions.moveTask({from, to}))
-
-    dispatch(boardActions.dragSetFrom(false))
-    dispatch(boardActions.dragSetTo(false))
-  }, [to])
-
   const removeTask = () => {
-    dispatch(tasksActions.removeTask({id: task.id}))
+    dispatch(tasksActions.removeTask({task}))
   }
 
   const modifyAssignee = (userId) => {
-    const data = {taskId: task.id, assignee: users[userId]}
+    const data = {task, assignee: users[userId]}
     dispatch(tasksActions.changeTaskAssignee(data))
   }
 
   const dragStartHandler = (e) => {
+    console.log('DRAG', task.id)
     const data = e.target.closest('.task-widget').dataset.id
-    dispatch(boardActions.dragSetFrom(data)) 
+    dispatch(boardActions.dragSetFrom({status: task.status, id: task.id})) 
   }
 
   const dragOverHandler = (e) => {
+    console.log('DRAGGING OVER', task.id)
     e.stopPropagation()
     e.preventDefault()
   }
 
+  const dragOutHandler = (e) => {
+    console.log('LEAVING DRAG', task.id)
+  }
+
   const dragDropHandler = async (e) => {
+    console.log('DROP', task.id)
     const data = e.target.closest('.task-widget').dataset.id
-    dispatch(boardActions.dragSetTo(data))
+    dispatch(boardActions.dragSetTo({status: task.status, id: task.id}))
   }
 
   return (
-    <div className='task-widget' data-id={task.id} draggable onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDrop={dragDropHandler}>
+    <div className='task-widget' data-id={task.id} onDragLeave={dragOutHandler} draggable onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDrop={dragDropHandler}>
       <div className="task-widget__left">
         <ChangeAssignee assignee={task.assignee} id={task.id} modifyAssignee={modifyAssignee} />
         <h5>{task.title}</h5>

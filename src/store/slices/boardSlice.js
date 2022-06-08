@@ -16,7 +16,7 @@ const boardSlice = createSlice({
             state.drag.from = action.payload
         },
         dragSetTo(state, action){
-                state.drag.to = action.payload
+            state.drag.to = action.payload
         }
     }
 })
