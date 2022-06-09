@@ -105,6 +105,11 @@ body {
   display: block;
 }
 
+.app-board .status-column ul .task-widget.task-hide {
+  opacity: 0;
+  position: absolute;
+}
+
 .app-board .status-column .add-task {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -76,6 +76,10 @@ body{
                     display: block;
                 }
             }
+            .task-widget.task-hide{
+                opacity: 0;
+                position: absolute;
+            }
         }
         .add-task{
             display: flex;

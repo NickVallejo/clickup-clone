@@ -12,7 +12,8 @@ const initState = {
     3 : [
         {id: 9012, status: 3, title: 'go zorbing with austin'},
         {id: 9021, status: 3, title: 'eat a lil poo'}
-    ] 
+    ],
+    'figment' : false
 }
 
 const tasksSlice = createSlice({
@@ -42,6 +43,24 @@ const tasksSlice = createSlice({
             splicedEl.status = to.status
             
             state[to.status].splice(toIdx, 0, splicedEl)
+        },
+        createFigment(state, action){
+            const task = action.payload.task
+            state['figment'] = {...task, figment: true, id: task.id+'-figment'}
+            
+        },
+        displayFigment(state, action){
+            const task = action.payload.task
+            const toIdx = state[task.status].findIndex(el => el.id === task.id)
+            state['figment'].status = task.status
+            const figmentCopy = {...state['figment'], id: "figment-placed"}
+            figmentCopy.id = 'figment-placed'
+            state[task.status].splice(toIdx, 0, figmentCopy)
+        },
+        hideFigment(state, action){
+            const figmentStatus = state['figment'].status
+            const figIdx = state[figmentStatus].findIndex(el => el.figment)
+            state[figmentStatus].splice(figIdx, 1)
         }
     }
 })
